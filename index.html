@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <style>
-/* ===== TRUE DARK MODE (BLACK THEME + WHITE FONT) ===== */
 :root{
   --bg: #000000;
   --panel: #0b0f14;
@@ -21,116 +20,40 @@
   --warnBorder: #f59e0b;
   --inputBorder: rgba(255,255,255,.16);
 }
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+*{ box-sizing:border-box; }
+body{ margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text); }
+h1{ color:var(--text); text-align:center; margin:22px 12px 8px; font-weight:700; }
+.container{
+  background:var(--panel); padding:20px; max-width:760px; margin:18px auto 40px;
+  border-radius:10px; border:1px solid rgba(255,255,255,.08); box-shadow:0 10px 30px rgba(0,0,0,.55);
 }
-
-h1 {
-  color: var(--text);
-  text-align: center;
-  margin: 22px 12px 8px;
-  font-weight: 700;
+select{
+  width:100%; padding:10px; margin-bottom:14px; background:var(--panel2); color:var(--text);
+  border:1px solid var(--inputBorder); border-radius:8px; outline:none;
 }
-
-.container {
-  background: var(--panel);
-  padding: 20px;
-  max-width: 760px;
-  margin: 18px auto 40px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 10px 30px rgba(0,0,0,.55);
+select:disabled{ opacity:.55; cursor:not-allowed; }
+select option{ background:var(--panel2); color:var(--text); }
+.result,.notes{
+  background:var(--box); padding:15px; border-left:4px solid var(--border); margin-top:15px;
+  border-radius:8px; border:1px solid rgba(255,255,255,.08);
 }
-
-select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 14px;
-  background: var(--panel2);
-  color: var(--text);
-  border: 1px solid var(--inputBorder);
-  border-radius: 8px;
-  outline: none;
+.result h3,.notes h3{ margin:0 0 10px; color:var(--text); }
+.result p{ margin:6px 0; color:var(--text); }
+textarea{
+  width:100%; height:260px; margin-top:10px; padding:10px; font-family:Consolas,monospace;
+  background:var(--panel2); color:var(--text); border:1px solid var(--inputBorder);
+  border-radius:8px; resize:vertical;
 }
-
-select:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+button{
+  margin-top:10px; padding:9px 14px; border:1px solid rgba(255,255,255,.10);
+  background:var(--btn); color:var(--text); border-radius:8px; cursor:pointer;
 }
-
-select option {
-  background: var(--panel2);
-  color: var(--text);
+button:active{ background:var(--btnActive); }
+.disclaimer{
+  background:var(--warnBg); border-left:4px solid var(--warnBorder); padding:10px 12px; margin-top:10px;
+  border-radius:8px; font-size:.95em; line-height:1.35; color:var(--text);
 }
-
-.result, .notes {
-  background: var(--box);
-  padding: 15px;
-  border-left: 4px solid var(--border);
-  margin-top: 15px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.08);
-}
-
-.result h3, .notes h3 {
-  margin: 0 0 10px;
-  color: var(--text);
-}
-
-.result p {
-  margin: 6px 0;
-  color: var(--text);
-}
-
-.result b, .notes b { color: var(--text); }
-
-textarea {
-  width: 100%;
-  height: 260px;
-  margin-top: 10px;
-  padding: 10px;
-  font-family: Consolas, monospace;
-  background: var(--panel2);
-  color: var(--text);
-  border: 1px solid var(--inputBorder);
-  border-radius: 8px;
-  resize: vertical;
-}
-
-button {
-  margin-top: 10px;
-  padding: 9px 14px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: var(--btn);
-  color: var(--text);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:active { background: var(--btnActive); }
-
-.disclaimer {
-  background: var(--warnBg);
-  border-left: 4px solid var(--warnBorder);
-  padding: 10px 12px;
-  margin-top: 10px;
-  border-radius: 8px;
-  font-size: 0.95em;
-  line-height: 1.35;
-  color: var(--text);
-}
-
-.smallMuted {
-  color: var(--muted);
-  font-size: 0.92em;
-  margin-top: 8px;
-}
+.smallMuted{ color:var(--muted); font-size:.92em; margin-top:8px; }
 </style>
 </head>
 
@@ -388,181 +311,29 @@ For Emergency Dept Printers and Network Printers see KA1596.`
     }
   },
 
-  "Access to Systems": {
-    "Connect EPR": {
-      "Add Smartcard role after training completion": {
+  /* ✅ A&E */
+  "A&E": {
+    "VDI / Horizon": {
+      "Connect not opening / general VDI error": {
         team: "Service Desk",
         contact: "Service Desk Queue",
-        notes: "User has completed training and requires the relevant Connect/EPR role adding to their Smartcard.",
+        notes: "A&E user on VDI reports Connect not opening or general errors (A&E use VDI devices).",
         checked: [
-          "Confirmed user identity and Smartcard details as per process",
-          "Confirmed training completion (as per local evidence/process)",
-          "Confirmed which role is required",
-          "Confirmed site/area/department if role is site-specific"
-        ],
-        action: "On completion of training add the relevant role to the user's Smartcard."
-      }
-    },
-    "G2": {
-      "New account / access request": {
-        team: "EPR Support",
-        contact: "EPR Support Queue",
-        notes: "User requires a G2 account/access.",
-        checked: [
-          "Confirmed user details and department",
-          "Confirmed training completion/approval route as per process",
-          "Confirmed whether request is in-hours or out-of-hours (OOH)",
-          "Confirmed device/computer name if app assignment/group membership required"
+          "Confirmed user is in A&E and using VDI (Horizon)",
+          "Confirmed whether issue is only this user or multiple users",
+          "Captured any error message / screenshot",
+          "Confirmed user has logged off and back on"
         ],
         action:
-`For an account assign the call to the EPR team. If OOH 24/7 can create.
-You may need to add the computer to the res_app_c group.`
-      }
-    },
-    "Infoflex": {
-      "Access / account request": {
-        team: "Infoflex Team",
-        contact: "Infoflex Queue",
-        notes: "User requires Infoflex access or account support.",
-        checked: [
-          "Confirmed user identity and department",
-          "Confirmed what access is required",
-          "Confirmed any approvals/training as per process"
-        ],
-        action: "Assign a ticket to the Infoflex team."
-      }
-    },
-    "ICE": {
-      "Access request after training completion": {
-        team: "ICE Team",
-        contact: "ICE Queue",
-        notes: "User has completed training and requires ICE access.",
-        checked: [
-          "Confirmed user identity and department",
-          "Confirmed training completion (as per local evidence/process)",
-          "Confirmed required permissions/roles"
-        ],
-        action: "On completion of training assign a ticket to the ICE team."
-      }
-    },
-    "SystemOne": {
-      "Sponsor required / access request": {
-        team: "SystemOne Team",
-        contact: "SystemOne Queue",
-        notes: "User requires a sponsor for SystemOne access.",
-        checked: [
-          "Confirmed user identity and department",
-          "Confirmed whether the user already has a sponsor",
-          "Confirmed contact details for sponsor if known"
-        ],
-        action: "User requires a sponsor. Assign a ticket to the SystemOne team to confirm with user."
-      }
-    },
-    "ESR": {
-      "Account / password issues": {
-        team: "ESR",
-        contact: "Ext 52220",
-        notes: "ESR account-related query (e.g., password issues).",
-        checked: [
-          "Confirmed the issue is ESR-related (not AD/Smartcard login)",
-          "Confirmed user details"
-        ],
-        action: "User to contact ESR on ext 52220."
-      }
-    },
-    "Metavision": {
-      "Access request (after training)": {
-        team: "Service Desk",
-        contact: "Service Desk Queue",
-        notes: "Metavision access request. Doctors/Nurses must complete training then add user to relevant MV group (e.g., MVNurse).",
-        checked: [
-          "Confirmed training completion (as per local evidence/process)",
-          "Confirmed user role (Doctor/Nurse/Other)",
-          "Confirmed required MV group (e.g. MVNurse)",
-          "Confirmed user account/username"
-        ],
-        action: "After training completion, add the user to the relevant Metavision group (e.g., MVNurse)."
+`Usually fixed by resetting the user's session.
+
+If issue persists the user may be getting assigned to the same VM:
+- Restart the VM or shutdown via Horizon.`
       }
     }
   },
 
-  "Medical Devices": {
-    "Clinical Engineering": {
-      "ECG / X-ray / other medical device issue": {
-        team: "Clinical Engineering",
-        contact: "Clinical Engineering Queue",
-        notes: "Issue reported with a medical device (e.g., ECG machine, X-ray machine, other clinical equipment).",
-        checked: [
-          "Confirmed device type and model",
-          "Confirmed location/ward/department",
-          "Confirmed asset number/serial number if available",
-          "Captured error message / symptoms",
-          "Confirmed patient impact/urgency"
-        ],
-        action: "Assign to Clinical Engineering."
-      }
-    }
-  },
-
-  "Telecoms": {
-    "Phone Numbers": {
-      "IP phone issue (number starts with 78)": {
-        team: "Telecoms",
-        contact: "Telecoms Team",
-        notes: "Issue with IP phone (extension/number starts with 78).",
-        checked: [
-          "Confirmed extension number (starts with 78)",
-          "Confirmed handset location",
-          "Confirmed issue type (no dial tone, can't receive calls, etc.)"
-        ],
-        action: "IP numbers starting with 78 are assigned to the Telecoms team."
-      },
-      "Non-IP phone issue (all other numbers)": {
-        team: "Switchboard",
-        contact: "Switchboard",
-        notes: "Issue with non-IP phone (extension does not start with 78).",
-        checked: [
-          "Confirmed extension number (does not start with 78)",
-          "Confirmed handset location",
-          "Confirmed issue type (no dial tone, can't receive calls, etc.)"
-        ],
-        action: "All other numbers go to Switchboard."
-      }
-    }
-  },
-
-  "Cyber": {
-    "Security Incidents": {
-      "Virus / malware detected": {
-        team: "Cyber Security",
-        contact: "Cyber Security Team",
-        notes: "Potential malware/virus detected on a device.",
-        checked: [
-          "Confirmed what was detected and by what (AV alert, pop-up, user report)",
-          "Captured screenshot or alert details if possible",
-          "Confirmed device name/asset tag and user details",
-          "Confirmed whether any suspicious activity occurred (files encrypted, unknown logins, pop-ups)"
-        ],
-        action:
-`Assign to Cyber Security team.
-
-Advise user to disconnect the device from the network immediately (unplug Ethernet / disable Wi-Fi) if malware/virus has been detected, and do not continue using the device until advised.`
-      },
-      "Compromised account / suspicious login": {
-        team: "Cyber Security",
-        contact: "Cyber Security Team",
-        notes: "User reports a compromised account or suspicious login activity.",
-        checked: [
-          "Confirmed what happened (MFA prompts, unexpected password change, unknown email rules, etc.)",
-          "Confirmed time of incident and affected account(s)",
-          "Confirmed whether user clicked links/opened attachments",
-          "Captured any relevant screenshots"
-        ],
-        action: "Assign to Cyber Security team. If device may be infected, advise user to disconnect from the network."
-      }
-    }
-  },
-
+  /* ✅ SERVERS & STORAGE including folder access */
   "Servers & Storage": {
     "File Servers": {
       "Server crashing / unstable": {
@@ -590,6 +361,58 @@ Advise user to disconnect the device from the network immediately (unplug Ethern
           "If possible, captured reported free space"
         ],
         action: "Escalated to Server and Storage for disk utilisation and capacity management."
+      }
+    },
+
+    "I Drive (\\\\STH\\\\Systems\\\\SharedDB)": {
+      "New folder creation": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Request to create a new folder on the I Drive and apply permissions.",
+        checked: [
+          "Confirmed required folder path and folder name",
+          "Confirmed whether folder is top level (may require new security groups)",
+          "Confirmed who needs Read vs Modify access",
+          "Confirmed approvals as per local process"
+        ],
+        action:
+`Service Desk to complete folder creation and permissions:
+
+1. Load the I Drive (\\\\STH\\Systems\\SharedDB) and create the folder in the specified location. If the folder is at the top level it will require a new security group to be created.
+
+2. Load AD and find the following location:
+“sth.nhs.uk/Legacy OUs/Trust Wide & System Groups/NGH SAN Shared Database Groups (I Drive)”
+
+3. Create 2 security groups, one for read and one for modify using the following naming convention:
+- New Folder Name (Modify)
+- New Folder Name (Read)
+
+4. In both security groups under the “Member Of” tab add the group “NGHSAN Shared DB”
+
+5. Now add the staff to the “Members” tab
+
+6. Right click on the newly created folder and go to “Properties”
+
+7. Under “Security” tab, “Edit”, now add the two groups ensuring the relevant groups have the correct permissions.`
+      },
+
+      "Add folder access / amend folder access": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Request to add or amend user access to an existing I Drive folder.",
+        checked: [
+          "Confirmed folder path on I Drive",
+          "Confirmed required access level (Read vs Modify)",
+          "Confirmed user(s) to be added/removed",
+          "Confirmed approval as per local process"
+        ],
+        action:
+`Service Desk to amend access via the relevant security groups:
+
+- Identify the folder's Read and Modify groups (naming convention: Folder Name (Read) / Folder Name (Modify))
+- Add/remove users in the appropriate AD security group
+- Confirm the groups are members of “NGHSAN Shared DB”
+- Validate folder permissions under folder Properties → Security (if required by process)`
       }
     }
   }
