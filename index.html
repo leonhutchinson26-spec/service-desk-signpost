@@ -20,40 +20,112 @@
   --warnBorder: #f59e0b;
   --inputBorder: rgba(255,255,255,.16);
 }
+
 *{ box-sizing:border-box; }
-body{ margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text); }
-h1{ color:var(--text); text-align:center; margin:22px 12px 8px; font-weight:700; }
+
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1{
+  color: var(--text);
+  text-align:center;
+  margin: 22px 12px 8px;
+  font-weight:700;
+}
+
 .container{
-  background:var(--panel); padding:20px; max-width:760px; margin:18px auto 40px;
-  border-radius:10px; border:1px solid rgba(255,255,255,.08); box-shadow:0 10px 30px rgba(0,0,0,.55);
+  background: var(--panel);
+  padding: 20px;
+  max-width: 760px;
+  margin: 18px auto 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.55);
 }
+
 select{
-  width:100%; padding:10px; margin-bottom:14px; background:var(--panel2); color:var(--text);
-  border:1px solid var(--inputBorder); border-radius:8px; outline:none;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--inputBorder);
+  border-radius: 8px;
+  outline: none;
 }
-select:disabled{ opacity:.55; cursor:not-allowed; }
-select option{ background:var(--panel2); color:var(--text); }
-.result,.notes{
-  background:var(--box); padding:15px; border-left:4px solid var(--border); margin-top:15px;
-  border-radius:8px; border:1px solid rgba(255,255,255,.08);
+
+select:disabled{
+  opacity: .55;
+  cursor: not-allowed;
 }
-.result h3,.notes h3{ margin:0 0 10px; color:var(--text); }
-.result p{ margin:6px 0; color:var(--text); }
+
+select option{
+  background: var(--panel2);
+  color: var(--text);
+}
+
+.result, .notes{
+  background: var(--box);
+  padding: 15px;
+  border-left: 4px solid var(--border);
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.result h3, .notes h3{
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+.result p{
+  margin: 6px 0;
+}
+
 textarea{
-  width:100%; height:260px; margin-top:10px; padding:10px; font-family:Consolas,monospace;
-  background:var(--panel2); color:var(--text); border:1px solid var(--inputBorder);
-  border-radius:8px; resize:vertical;
+  width: 100%;
+  height: 260px;
+  margin-top: 10px;
+  padding: 10px;
+  font-family: Consolas, monospace;
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--inputBorder);
+  border-radius: 8px;
+  resize: vertical;
 }
+
 button{
-  margin-top:10px; padding:9px 14px; border:1px solid rgba(255,255,255,.10);
-  background:var(--btn); color:var(--text); border-radius:8px; cursor:pointer;
+  margin-top: 10px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: var(--btn);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
 }
-button:active{ background:var(--btnActive); }
+
+button:active{ background: var(--btnActive); }
+
 .disclaimer{
-  background:var(--warnBg); border-left:4px solid var(--warnBorder); padding:10px 12px; margin-top:10px;
-  border-radius:8px; font-size:.95em; line-height:1.35; color:var(--text);
+  background: var(--warnBg);
+  border-left: 4px solid var(--warnBorder);
+  padding: 10px 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  line-height: 1.35;
 }
-.smallMuted{ color:var(--muted); font-size:.92em; margin-top:8px; }
+
+.smallMuted{
+  color: var(--muted);
+  font-size: 0.92em;
+  margin-top: 8px;
+}
 </style>
 </head>
 
@@ -269,20 +341,20 @@ const data = {
         action:
 `Preparing printer to be shared:
 
-1. Connect printer to Host PC
-2. Rename printer on host PC to one of the shared names listed below
-3. Open Printer Properties
-4. Sharing → Share this Printer
-5. Ensure shared name is correct
-6. Apply
+Connect Printer to Host PC
+Rename printer on host PC to one of shared names listed below
+Open Printer Properties
+Sharing, Share this Printer
+Ensure shared name is correct
+Apply
 
-ICE naming conventions (must match ICE):
-- "ICE request label printer" (Label printer - currently Zebra 2824)
-- "ICE adult wristband printer" (Adult wristband printing - Zebra HC100)
-- "ICE child wristband printer" (Childrens wristband printing - Zebra HC100)
-- "Address Label Printer" (Zebra GK420t - named and shared)
-- "ICE Request Label Printer" (Zebra ZDesigner ZD410-203dpi ZPL)
-- "ICE Adult Wristband Printer" (Zebra ZDesigner ZD510-300dpi ZPL)
+For ICE, Windows printers must be renamed to match those defined within ICE, the current naming conventions are:
+- “ICE request label printer” (label printer - at present Zebra 2824)
+- “ICE adult wristband printer” (Adult wristband printing - Zebra HC100)
+- “ICE child wristband printer” (Childrens wristband printing - Zebra HC100)
+- “Address Label Printer” (Zebra GK420t Named and shared)
+- “ICE Request Label Printer” (Zebra ZDesigner ZD410-203dpi ZPL)
+- “ICE Adult Wristband Printer” (Zebra ZDesigner ZD510-300dpi ZPL)
 
 For Emergency Dept Printers and Network Printers see KA1596.`
       },
@@ -298,30 +370,140 @@ For Emergency Dept Printers and Network Printers see KA1596.`
         action:
 `Adding printer to a device:
 
-1. Add a local printer
-2. Create New Port
-3. Local Port
-4. Enter Port Name - \\\\Computer Number\\Printer Share Name
-5. Choose the Printer
-6. Use current driver
-7. Rename the printer to the correct name
-8. Do not share
-9. Finish`
+Add a local printer
+Create New Port
+Local Port
+Enter Port Name - \\\\Computer Number\\Printer Share Name
+Choose the Printer
+Use current driver
+Rename the printer to the correct name
+Do not share
+Finish`
       }
     }
   },
 
-  /* ✅ A&E */
+  "Office 365": {
+    "Outlook": {
+      "Outlook not opening / stuck loading": {
+        team: "Remote Support",
+        contact: "Remote Support Queue",
+        notes: "Outlook not opening or stuck on loading screen.",
+        checked: [
+          "Confirmed if Outlook on web works (OWA)",
+          "Tried closing Outlook fully (Task Manager) and reopening",
+          "Tried Safe Mode (outlook.exe /safe) if applicable",
+          "Checked if issue affects only this user or multiple users",
+          "Captured any error message / screenshot"
+        ],
+        action: "If not resolved, pass to Remote Support for profile/add-in investigation."
+      },
+      "Cannot send/receive emails": {
+        team: "Remote Support",
+        contact: "Remote Support Queue",
+        notes: "User cannot send or receive emails in Outlook.",
+        checked: [
+          "Confirmed if Outlook is in 'Work Offline'",
+          "Confirmed mailbox accessible via Outlook on web",
+          "Checked internet/VPN connectivity",
+          "Checked if issue is only one mailbox or all mailboxes",
+          "Captured bounce-back / NDR details if applicable"
+        ],
+        action: "If OWA works but Outlook does not, pass to Remote Support. If NDR indicates routing/recipient issues, escalate accordingly."
+      },
+      "Shared mailbox / calendar access": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "User requires access to a shared mailbox or shared calendar.",
+        checked: [
+          "Confirmed shared mailbox / calendar name",
+          "Confirmed required access level (Read-only vs Send As/Full Access)",
+          "Confirmed business justification / approval route if required",
+          "Confirmed user UPN/username"
+        ],
+        action: "Service Desk to action access request as per process."
+      },
+      "Outlook search not working": {
+        team: "Remote Support",
+        contact: "Remote Support Queue",
+        notes: "Outlook search returns incomplete or no results.",
+        checked: [
+          "Confirmed mailbox size and whether issue is recent",
+          "Tried Outlook restart",
+          "Checked if search works in OWA"
+        ],
+        action: "Pass to Remote Support to investigate indexing/search configuration."
+      }
+    },
+    "Licensing": {
+      "Office apps showing 'Read-Only' (web licence only)": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Office desktop apps show Read-Only / Unlicensed. Often caused by user having web-only licence.",
+        checked: [
+          "Checked if a banner indicates 'Unlicensed product' / 'Read-Only' / 'Activation required'",
+          "Confirmed user has web-only licence",
+          "Confirmed this started after device rebuild/new login/new starter or licence change",
+          "Captured screenshot of the message/banners"
+        ],
+        action:
+`Advise user to go to the IT Portal → "Request New Software" and request the appropriate Office desktop licence. Service Desk to guide/assist if needed.
+
+If the user already has a full licence, sign the user out of Office and sign them back in with their nhs.net credentials.`
+      }
+    }
+  },
+
+  "Smartcards": {
+    "Roles & User Details": {
+      "Add roles / amend roles": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Request to add or amend Smartcard roles.",
+        checked: [
+          "Confirmed user identity and Smartcard details (if required by process)",
+          "Confirmed roles required (including RA/approval if applicable)",
+          "Confirmed where the roles are needed (site/system/area)",
+          "Confirmed urgency and impact"
+        ],
+        action: "Service Desk to add/amend Smartcard roles as per procedure."
+      },
+      "Change user name (Smartcard)": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Request to update the user name associated with the Smartcard.",
+        checked: [
+          "Confirmed current name on record and required new name",
+          "Confirmed evidence/approval required by local process",
+          "Confirmed any downstream systems impacted"
+        ],
+        action: "Service Desk to update Smartcard name as per procedure."
+      },
+      "BeginApp Failed error message": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "User receives 'BeginApp Failed' when launching an application.",
+        checked: [
+          "Confirmed which application they are launching",
+          "Confirmed Smartcard is inserted and user is logged in",
+          "Confirmed which role the user selected on the Smartcard",
+          "Asked the user to close the app fully and try again after selecting the correct role"
+        ],
+        action: "Common cause is the user selecting the wrong Smartcard role. Have the user re-launch and select the correct role. If correct role is missing, process a role add/amend request."
+      }
+    }
+  },
+
   "A&E": {
     "VDI / Horizon": {
       "Connect not opening / general VDI error": {
         team: "Service Desk",
         contact: "Service Desk Queue",
-        notes: "A&E user on VDI reports Connect not opening or general errors (A&E use VDI devices).",
+        notes: "A&E use VDI devices. Connect not opening or general errors on VDI.",
         checked: [
           "Confirmed user is in A&E and using VDI (Horizon)",
-          "Confirmed whether issue is only this user or multiple users",
           "Captured any error message / screenshot",
+          "Confirmed whether issue affects only this user or multiple users",
           "Confirmed user has logged off and back on"
         ],
         action:
@@ -333,7 +515,181 @@ If issue persists the user may be getting assigned to the same VM:
     }
   },
 
-  /* ✅ SERVERS & STORAGE including folder access */
+  "Access to Systems": {
+    "Connect EPR": {
+      "Add Smartcard role after training completion": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "User has completed training and requires the relevant Connect/EPR role adding to their Smartcard.",
+        checked: [
+          "Confirmed user identity and Smartcard details as per process",
+          "Confirmed training completion (as per local evidence/process)",
+          "Confirmed which role is required",
+          "Confirmed site/area/department if role is site-specific"
+        ],
+        action: "On completion of training add the relevant role to the user's Smartcard."
+      }
+    },
+    "G2": {
+      "New account / access request": {
+        team: "EPR Support",
+        contact: "EPR Support Queue",
+        notes: "User requires a G2 account/access.",
+        checked: [
+          "Confirmed user details and department",
+          "Confirmed training completion/approval route as per process",
+          "Confirmed whether request is in-hours or out-of-hours (OOH)",
+          "Confirmed device/computer name if app assignment/group membership required"
+        ],
+        action:
+`For an account assign the call to the EPR team. If OOH 24/7 can create.
+You may need to add the computer to the res_app_c group.`
+      }
+    },
+    "Infoflex": {
+      "Access / account request": {
+        team: "Infoflex Team",
+        contact: "Infoflex Queue",
+        notes: "User requires Infoflex access or account support.",
+        checked: [
+          "Confirmed user identity and department",
+          "Confirmed what access is required",
+          "Confirmed any approvals/training as per process"
+        ],
+        action: "Assign a ticket to the Infoflex team."
+      }
+    },
+    "ICE": {
+      "Access request after training completion": {
+        team: "ICE Team",
+        contact: "ICE Queue",
+        notes: "User has completed training and requires ICE access.",
+        checked: [
+          "Confirmed user identity and department",
+          "Confirmed training completion (as per local evidence/process)",
+          "Confirmed required permissions/roles"
+        ],
+        action: "On completion of training assign a ticket to the ICE team."
+      }
+    },
+    "SystemOne": {
+      "Sponsor required / access request": {
+        team: "SystemOne Team",
+        contact: "SystemOne Queue",
+        notes: "User requires a sponsor for SystemOne access.",
+        checked: [
+          "Confirmed user identity and department",
+          "Confirmed whether the user already has a sponsor",
+          "Confirmed contact details for sponsor if known"
+        ],
+        action: "User requires a sponsor. Assign a ticket to the SystemOne team to confirm with user."
+      }
+    },
+    "ESR": {
+      "Account / password issues": {
+        team: "ESR",
+        contact: "Ext 52220",
+        notes: "ESR account-related query (e.g., password issues).",
+        checked: [
+          "Confirmed the issue is ESR-related (not AD/Smartcard login)",
+          "Confirmed user details"
+        ],
+        action: "User to contact ESR on ext 52220."
+      }
+    },
+    "Metavision": {
+      "Access request (after training)": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Metavision access request. Doctors/Nurses must complete training then add user to relevant MV group (e.g., MVNurse).",
+        checked: [
+          "Confirmed training completion (as per local evidence/process)",
+          "Confirmed user role (Doctor/Nurse/Other)",
+          "Confirmed required MV group (e.g. MVNurse)",
+          "Confirmed user account/username"
+        ],
+        action: "After training completion, add the user to the relevant Metavision group (e.g., MVNurse)."
+      }
+    }
+  },
+
+  "Medical Devices": {
+    "Clinical Engineering": {
+      "ECG / X-ray / other medical device issue": {
+        team: "Clinical Engineering",
+        contact: "Clinical Engineering Queue",
+        notes: "Issue reported with a medical device (e.g., ECG machine, X-ray machine, other clinical equipment).",
+        checked: [
+          "Confirmed device type and model",
+          "Confirmed location/ward/department",
+          "Confirmed asset number/serial number if available",
+          "Captured error message / symptoms",
+          "Confirmed patient impact/urgency"
+        ],
+        action: "Assign to Clinical Engineering."
+      }
+    }
+  },
+
+  "Telecoms": {
+    "Phone Numbers": {
+      "IP phone issue (number starts with 78)": {
+        team: "Telecoms",
+        contact: "Telecoms Team",
+        notes: "Issue with IP phone (extension/number starts with 78).",
+        checked: [
+          "Confirmed extension number (starts with 78)",
+          "Confirmed handset location",
+          "Confirmed issue type (no dial tone, can't receive calls, etc.)"
+        ],
+        action: "IP numbers starting with 78 are assigned to the Telecoms team."
+      },
+      "Non-IP phone issue (all other numbers)": {
+        team: "Switchboard",
+        contact: "Switchboard",
+        notes: "Issue with non-IP phone (extension does not start with 78).",
+        checked: [
+          "Confirmed extension number (does not start with 78)",
+          "Confirmed handset location",
+          "Confirmed issue type (no dial tone, can't receive calls, etc.)"
+        ],
+        action: "All other numbers go to Switchboard."
+      }
+    }
+  },
+
+  "Cyber": {
+    "Security Incidents": {
+      "Virus / malware detected": {
+        team: "Cyber Security",
+        contact: "Cyber Security Team",
+        notes: "Potential malware/virus detected on a device.",
+        checked: [
+          "Confirmed what was detected and by what (AV alert, pop-up, user report)",
+          "Captured screenshot or alert details if possible",
+          "Confirmed device name/asset tag and user details",
+          "Confirmed whether any suspicious activity occurred (files encrypted, unknown logins, pop-ups)"
+        ],
+        action:
+`Assign to Cyber Security team.
+
+Advise user to disconnect the device from the network immediately (unplug Ethernet / disable Wi-Fi) if malware/virus has been detected, and do not continue using the device until advised.`
+      },
+      "Compromised account / suspicious login": {
+        team: "Cyber Security",
+        contact: "Cyber Security Team",
+        notes: "User reports a compromised account or suspicious login activity.",
+        checked: [
+          "Confirmed what happened (MFA prompts, unexpected password change, unknown email rules, etc.)",
+          "Confirmed time of incident and affected account(s)",
+          "Confirmed whether user clicked links/opened attachments",
+          "Captured any relevant screenshots"
+        ],
+        action: "Assign to Cyber Security team. If device may be infected, advise user to disconnect from the network."
+      }
+    }
+  },
+
   "Servers & Storage": {
     "File Servers": {
       "Server crashing / unstable": {
@@ -380,14 +736,14 @@ If issue persists the user may be getting assigned to the same VM:
 
 1. Load the I Drive (\\\\STH\\Systems\\SharedDB) and create the folder in the specified location. If the folder is at the top level it will require a new security group to be created.
 
-2. Load AD and find the following location:
+2. Load AD and find the following location
 “sth.nhs.uk/Legacy OUs/Trust Wide & System Groups/NGH SAN Shared Database Groups (I Drive)”
 
-3. Create 2 security groups, one for read and one for modify using the following naming convention:
-- New Folder Name (Modify)
-- New Folder Name (Read)
+3. Create 2 security groups, one for read and one for modify using the following naming convention
+New Folder Name (Modify)
+New Folder Name (Read)
 
-4. In both security groups under the “Member Of” tab add the group “NGHSAN Shared DB”
+4. In both the security groups under the “Member Of” tab add the group “NGHSAN Shared DB”
 
 5. Now add the staff to the “Members” tab
 
@@ -428,16 +784,20 @@ Object.keys(data).forEach(k => level1.add(new Option(k, k)));
 
 level1.onchange = () => {
   reset(level2); reset(level3);
-  result.innerHTML = ''; notesDiv.innerHTML = '';
+  result.innerHTML = '';
+  notesDiv.innerHTML = '';
   if (!level1.value) return;
+
   Object.keys(data[level1.value]).forEach(k => level2.add(new Option(k, k)));
   level2.disabled = false;
 };
 
 level2.onchange = () => {
   reset(level3);
-  result.innerHTML = ''; notesDiv.innerHTML = '';
+  result.innerHTML = '';
+  notesDiv.innerHTML = '';
   if (!level2.value) return;
+
   Object.keys(data[level1.value][level2.value]).forEach(k => level3.add(new Option(k, k)));
   level3.disabled = false;
 };
@@ -473,7 +833,7 @@ ${r.action}`;
     <button onclick="copyNotes(event)">Copy Call Notes</button>`;
 };
 
-function copyNotes(e) {
+function copyNotes(e){
   const ta = document.getElementById("callNotes");
   ta.select();
   ta.setSelectionRange(0, ta.value.length);
@@ -484,7 +844,7 @@ function copyNotes(e) {
   setTimeout(() => btn.textContent = "Copy Call Notes", 1500);
 }
 
-function reset(sel) {
+function reset(sel){
   sel.innerHTML = '<option value="">Select</option>';
   sel.disabled = true;
 }
