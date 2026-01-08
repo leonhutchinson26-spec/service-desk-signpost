@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IT Service Desk Signposting</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+/* ===== TRUE DARK MODE (BLACK THEME + WHITE FONT) ===== */
+:root{
+  --bg: #000000;
+  --panel: #0b0f14;
+  --panel2: #0f172a;
+  --text: #ffffff;
+  --muted: #cbd5e1;
+  --border: #3b82f6;
+  --box: #0a1220;
+  --btn: #2563eb;
+  --btnActive: #1d4ed8;
+  --warnBg: #241a06;
+  --warnBorder: #f59e0b;
+  --inputBorder: rgba(255,255,255,.16);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1 {
+  color: var(--text);
+  text-align: center;
+  margin: 22px 12px 8px;
+  font-weight: 700;
+}
+
+.container {
+  background: var(--panel);
+  padding: 20px;
+  max-width: 760px;
+  margin: 18px auto 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.55);
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--inputBorder);
+  border-radius: 8px;
+  outline: none;
+}
+
+select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+select option {
+  background: var(--panel2);
+  color: var(--text);
+}
+
+.result, .notes {
+  background: var(--box);
+  padding: 15px;
+  border-left: 4px solid var(--border);
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.result h3, .notes h3 {
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+.result p {
+  margin: 6px 0;
+  color: var(--text);
+}
+
+.result b, .notes b { color: var(--text); }
+
+textarea {
+  width: 100%;
+  height: 260px;
+  margin-top: 10px;
+  padding: 10px;
+  font-family: Consolas, monospace;
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--inputBorder);
+  border-radius: 8px;
+  resize: vertical;
+}
+
+button {
+  margin-top: 10px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: var(--btn);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:active { background: var(--btnActive); }
+
+.disclaimer {
+  background: var(--warnBg);
+  border-left: 4px solid var(--warnBorder);
+  padding: 10px 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.smallMuted {
+  color: var(--muted);
+  font-size: 0.92em;
+  margin-top: 8px;
+}
+</style>
+</head>
+
+<body>
+<h1>Service Desk Signpost</h1>
+
+<div class="container">
+  <select id="level1">
+    <option value="">Select Category</option>
+  </select>
+
+  <select id="level2" disabled>
+    <option value="">Select Sub-Category</option>
+  </select>
+
+  <select id="level3" disabled>
+    <option value="">Select Issue</option>
+  </select>
+
+  <div id="result" class="result"></div>
+  <div id="notes" class="notes"></div>
+</div>
+
+<script>
+const data = {
+  "Hardware": {
+    "Computer / Laptop": {
+      "No power": {
+        team: "2nd Line",
+        contact: "Service Desk Escalation",
+        notes: "Device not powering on.",
+        checked: [
+          "Power cable securely connected",
+          "Different power socket tested",
+          "Docking station bypassed",
+          "No lights or fan activity"
+        ],
+        action: "Issue escalated to 2nd Line for hardware investigation."
+      },
+      "No display": {
+        team: "2nd Line",
+        contact: "Service Desk Escalation",
+        notes: "No display on monitor.",
+        checked: [
+          "Monitor powered on",
+          "Video cable reseated",
+          "Alternative monitor tested",
+          "Laptop display toggle checked (Fn key)"
+        ],
+        action: "Escalated to 2nd Line – possible hardware/display fault."
+      },
+      "Physical damage": {
+        team: "2nd Line",
+        contact: "Service Desk Escalation",
+        notes: "Device has physical damage (e.g., cracked screen, broken casing/hinge, liquid damage).",
+        checked: [
+          "Confirmed device type and asset tag/serial number",
+          "Confirmed what is damaged and how it occurred",
+          "Confirmed whether the device is still usable/safe to operate",
+          "Captured photos if possible",
+          "Confirmed user location and contact number"
+        ],
+        action: "Escalated to 2nd Line for hardware damage assessment/repair or replacement."
+      },
+      "Lost / stolen device": {
+        team: "Business Services",
+        contact: "Business Services Queue",
+        notes: "User reports a device is lost or stolen.",
+        checked: [
+          "Confirmed device type and asset tag/serial number (if known)",
+          "Confirmed last known location and date/time last seen",
+          "Confirmed whether it was lost vs stolen",
+          "Confirmed user contact details and manager details (if required by process)",
+          "Advised user to report to Security/Police as per local policy (if applicable)"
+        ],
+        action: "Escalate to Business Services for lost/stolen device process (account/device actions, reporting and replacement as per policy)."
+      }
+    }
+  },
+
+  "Networking": {
+    "Network Services": {
+      "Network outage": {
+        team: "Network Team",
+        contact: "Network Queue",
+        notes: "Loss of network connectivity reported.",
+        checked: [
+          "Multiple users affected",
+          "Wi-Fi and wired impacted",
+          "No known local faults"
+        ],
+        action: "Referred to Network Team for investigation."
+      }
+    },
+    "Web Access": {
+      "No external sites": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "User reports they cannot access external websites.",
+        checked: [
+          "Confirmed if internal sites still work (e.g., intranet)",
+          "Checked whether multiple users are affected",
+          "Confirmed connection type (wired/Wi-Fi/VPN)",
+          "Confirmed if any specific site or all external sites",
+          "Confirmed no known outages/advisories"
+        ],
+        action: "Reboot the device. If issue persists after reboot and affects multiple users, escalate to Network Team."
+      }
+    }
+  },
+
+  "Software": {
+    "Applications": {
+      "Error messages": {
+        team: "Remote Support",
+        contact: "Remote Support Queue",
+        notes: "User reports application error.",
+        checked: [
+          "Exact error captured (screenshot if possible)",
+          "Application restarted",
+          "User logged out/in",
+          "If computer-based install: attempt repair/reinstall",
+          "If App-V / user-based: attempt App-V repair / re-publish / clear cache (as per process)"
+        ],
+        action: "If not resolved after the above checks (including reinstall/repair where appropriate), pass to Remote Support."
+      }
+    }
+  },
+
+  "Clinical Systems": {
+    "Connect / EPR": {
+      "Patient record issue": {
+        team: "EPR Support",
+        contact: "EPR Support Queue",
+        notes: "Issue with patient record access.",
+        checked: [
+          "Patient ID confirmed",
+          "User role verified",
+          "Issue reproducible"
+        ],
+        action: "Escalated to EPR Support."
+      }
+    },
+    "PowerChart": {
+      "App not opening but shows on task bar": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "PowerChart appears on the taskbar but the window does not open/restore.",
+        checked: [
+          "Confirmed PowerChart icon is visible on taskbar",
+          "Confirmed issue persists after clicking the icon",
+          "Checked if user has multiple monitors / docking station"
+        ],
+        action: "Hold SHIFT, then right-click the PowerChart taskbar icon, select 'Maximize'. If still not resolved, escalate to EPR Support."
+      }
+    }
+  },
+
+  "Mobile Devices": {
+    "Mobile Phones": {
+      "General query or fault": {
+        team: "EUC",
+        contact: "EUC Queue",
+        notes: "Mobile phone issue reported.",
+        checked: [
+          "Device model confirmed",
+          "Restart attempted",
+          "Signal/Wi-Fi checked"
+        ],
+        action: "Referred to EUC."
+      }
+    },
+    "Password Reset": {
+      "Reset mobile device password": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "User requires a mobile device password reset (AirWatch/Workspace ONE).",
+        checked: [
+          "Confirmed user identity as per process",
+          "Confirmed device details (make/model/asset tag if applicable)",
+          "Confirmed the user is locked out / forgotten passcode",
+          "Confirmed device has network connectivity if required"
+        ],
+        action: "Service Desk to reset the password via https://cn1498.awmdm.com/AirWatch/Login"
+      }
+    }
+  },
+
+  "Printing": {
+    "Xerox Printers": {
+      "Printer fault": {
+        team: "Xerox",
+        contact: "Xerox Support",
+        notes: "Xerox printer fault.",
+        checked: [
+          "Printer ID confirmed",
+          "Error code noted",
+          "Power cycle attempted"
+        ],
+        action: "Logged with Xerox support."
+      }
+    },
+    "ICE Printers": {
+      "Prepare printer to be shared (host PC)": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Prepare an ICE printer to be shared from a host PC.",
+        checked: [
+          "Confirmed printer model/type (Label/Wristband/Address label)",
+          "Confirmed host PC computer name/number",
+          "Confirmed required ICE naming convention"
+        ],
+        action:
+`Preparing printer to be shared:
+
+1. Connect printer to Host PC
+2. Rename printer on host PC to one of the shared names listed below
+3. Open Printer Properties
+4. Sharing → Share this Printer
+5. Ensure shared name is correct
+6. Apply
+
+ICE naming conventions (must match ICE):
+- "ICE request label printer" (Label printer - currently Zebra 2824)
+- "ICE adult wristband printer" (Adult wristband printing - Zebra HC100)
+- "ICE child wristband printer" (Childrens wristband printing - Zebra HC100)
+- "Address Label Printer" (Zebra GK420t - named and shared)
+- "ICE Request Label Printer" (Zebra ZDesigner ZD410-203dpi ZPL)
+- "ICE Adult Wristband Printer" (Zebra ZDesigner ZD510-300dpi ZPL)
+
+For Emergency Dept Printers and Network Printers see KA1596.`
+      },
+      "Add ICE printer to a device": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Add an ICE shared printer to a device using a local port path.",
+        checked: [
+          "Confirmed host PC computer name/number",
+          "Confirmed printer share name (must match ICE naming convention)",
+          "Confirmed device needs Label/Wristband/Address label printer"
+        ],
+        action:
+`Adding printer to a device:
+
+1. Add a local printer
+2. Create New Port
+3. Local Port
+4. Enter Port Name - \\\\Computer Number\\Printer Share Name
+5. Choose the Printer
+6. Use current driver
+7. Rename the printer to the correct name
+8. Do not share
+9. Finish`
+      }
+    }
+  },
+
+  "Access to Systems": {
+    "Connect EPR": {
+      "Add Smartcard role after training completion": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "User has completed training and requires the relevant Connect/EPR role adding to their Smartcard.",
+        checked: [
+          "Confirmed user identity and Smartcard details as per process",
+          "Confirmed training completion (as per local evidence/process)",
+          "Confirmed which role is required",
+          "Confirmed site/area/department if role is site-specific"
+        ],
+        action: "On completion of training add the relevant role to the user's Smartcard."
+      }
+    },
+    "G2": {
+      "New account / access request": {
+        team: "EPR Support",
+        contact: "EPR Support Queue",
+        notes: "User requires a G2 account/access.",
+        checked: [
+          "Confirmed user details and department",
+          "Confirmed training completion/approval route as per process",
+          "Confirmed whether request is in-hours or out-of-hours (OOH)",
+          "Confirmed device/computer name if app assignment/group membership required"
+        ],
+        action:
+`For an account assign the call to the EPR team. If OOH 24/7 can create.
+You may need to add the computer to the res_app_c group.`
+      }
+    },
+    "Infoflex": {
+      "Access / account request": {
+        team: "Infoflex Team",
+        contact: "Infoflex Queue",
+        notes: "User requires Infoflex access or account support.",
+        checked: [
+          "Confirmed user identity and department",
+          "Confirmed what access is required",
+          "Confirmed any approvals/training as per process"
+        ],
+        action: "Assign a ticket to the Infoflex team."
+      }
+    },
+    "ICE": {
+      "Access request after training completion": {
+        team: "ICE Team",
+        contact: "ICE Queue",
+        notes: "User has completed training and requires ICE access.",
+        checked: [
+          "Confirmed user identity and department",
+          "Confirmed training completion (as per local evidence/process)",
+          "Confirmed required permissions/roles"
+        ],
+        action: "On completion of training assign a ticket to the ICE team."
+      }
+    },
+    "SystemOne": {
+      "Sponsor required / access request": {
+        team: "SystemOne Team",
+        contact: "SystemOne Queue",
+        notes: "User requires a sponsor for SystemOne access.",
+        checked: [
+          "Confirmed user identity and department",
+          "Confirmed whether the user already has a sponsor",
+          "Confirmed contact details for sponsor if known"
+        ],
+        action: "User requires a sponsor. Assign a ticket to the SystemOne team to confirm with user."
+      }
+    },
+    "ESR": {
+      "Account / password issues": {
+        team: "ESR",
+        contact: "Ext 52220",
+        notes: "ESR account-related query (e.g., password issues).",
+        checked: [
+          "Confirmed the issue is ESR-related (not AD/Smartcard login)",
+          "Confirmed user details"
+        ],
+        action: "User to contact ESR on ext 52220."
+      }
+    },
+    "Metavision": {
+      "Access request (after training)": {
+        team: "Service Desk",
+        contact: "Service Desk Queue",
+        notes: "Metavision access request. Doctors/Nurses must complete training then add user to relevant MV group (e.g., MVNurse).",
+        checked: [
+          "Confirmed training completion (as per local evidence/process)",
+          "Confirmed user role (Doctor/Nurse/Other)",
+          "Confirmed required MV group (e.g. MVNurse)",
+          "Confirmed user account/username"
+        ],
+        action: "After training completion, add the user to the relevant Metavision group (e.g., MVNurse)."
+      }
+    }
+  },
+
+  "Medical Devices": {
+    "Clinical Engineering": {
+      "ECG / X-ray / other medical device issue": {
+        team: "Clinical Engineering",
+        contact: "Clinical Engineering Queue",
+        notes: "Issue reported with a medical device (e.g., ECG machine, X-ray machine, other clinical equipment).",
+        checked: [
+          "Confirmed device type and model",
+          "Confirmed location/ward/department",
+          "Confirmed asset number/serial number if available",
+          "Captured error message / symptoms",
+          "Confirmed patient impact/urgency"
+        ],
+        action: "Assign to Clinical Engineering."
+      }
+    }
+  },
+
+  "Telecoms": {
+    "Phone Numbers": {
+      "IP phone issue (number starts with 78)": {
+        team: "Telecoms",
+        contact: "Telecoms Team",
+        notes: "Issue with IP phone (extension/number starts with 78).",
+        checked: [
+          "Confirmed extension number (starts with 78)",
+          "Confirmed handset location",
+          "Confirmed issue type (no dial tone, can't receive calls, etc.)"
+        ],
+        action: "IP numbers starting with 78 are assigned to the Telecoms team."
+      },
+      "Non-IP phone issue (all other numbers)": {
+        team: "Switchboard",
+        contact: "Switchboard",
+        notes: "Issue with non-IP phone (extension does not start with 78).",
+        checked: [
+          "Confirmed extension number (does not start with 78)",
+          "Confirmed handset location",
+          "Confirmed issue type (no dial tone, can't receive calls, etc.)"
+        ],
+        action: "All other numbers go to Switchboard."
+      }
+    }
+  },
+
+  "Cyber": {
+    "Security Incidents": {
+      "Virus / malware detected": {
+        team: "Cyber Security",
+        contact: "Cyber Security Team",
+        notes: "Potential malware/virus detected on a device.",
+        checked: [
+          "Confirmed what was detected and by what (AV alert, pop-up, user report)",
+          "Captured screenshot or alert details if possible",
+          "Confirmed device name/asset tag and user details",
+          "Confirmed whether any suspicious activity occurred (files encrypted, unknown logins, pop-ups)"
+        ],
+        action:
+`Assign to Cyber Security team.
+
+Advise user to disconnect the device from the network immediately (unplug Ethernet / disable Wi-Fi) if malware/virus has been detected, and do not continue using the device until advised.`
+      },
+      "Compromised account / suspicious login": {
+        team: "Cyber Security",
+        contact: "Cyber Security Team",
+        notes: "User reports a compromised account or suspicious login activity.",
+        checked: [
+          "Confirmed what happened (MFA prompts, unexpected password change, unknown email rules, etc.)",
+          "Confirmed time of incident and affected account(s)",
+          "Confirmed whether user clicked links/opened attachments",
+          "Captured any relevant screenshots"
+        ],
+        action: "Assign to Cyber Security team. If device may be infected, advise user to disconnect from the network."
+      }
+    }
+  },
+
+  "Servers & Storage": {
+    "File Servers": {
+      "Server crashing / unstable": {
+        team: "Server and Storage",
+        contact: "Server & Storage Queue",
+        notes: "File server reported as crashing, freezing, or repeatedly restarting.",
+        checked: [
+          "Confirmed affected server name",
+          "Checked if multiple users or services are impacted",
+          "Confirmed frequency of crashes or disconnects",
+          "Observed error messages or freezes",
+          "Confirmed no planned maintenance or recent changes"
+        ],
+        action: "Escalated to Server and Storage for stability investigation."
+      },
+      "Low / no free disk space": {
+        team: "Server and Storage",
+        contact: "Server & Storage Queue",
+        notes: "File server or shared storage is low on disk space or out of space.",
+        checked: [
+          "Confirmed affected server or share path",
+          "Confirmed error messages (disk full, cannot save, profile issues)",
+          "Checked if multiple users or services are affected",
+          "Identified any recent large uploads or changes",
+          "If possible, captured reported free space"
+        ],
+        action: "Escalated to Server and Storage for disk utilisation and capacity management."
+      }
+    }
+  }
+};
+
+const level1 = document.getElementById('level1');
+const level2 = document.getElementById('level2');
+const level3 = document.getElementById('level3');
+const result = document.getElementById('result');
+const notesDiv = document.getElementById('notes');
+
+Object.keys(data).forEach(k => level1.add(new Option(k, k)));
+
+level1.onchange = () => {
+  reset(level2); reset(level3);
+  result.innerHTML = ''; notesDiv.innerHTML = '';
+  if (!level1.value) return;
+  Object.keys(data[level1.value]).forEach(k => level2.add(new Option(k, k)));
+  level2.disabled = false;
+};
+
+level2.onchange = () => {
+  reset(level3);
+  result.innerHTML = ''; notesDiv.innerHTML = '';
+  if (!level2.value) return;
+  Object.keys(data[level1.value][level2.value]).forEach(k => level3.add(new Option(k, k)));
+  level3.disabled = false;
+};
+
+level3.onchange = () => {
+  if (!level3.value) return;
+  const r = data[level1.value][level2.value][level3.value];
+
+  const noteText =
+`Issue: ${r.notes}
+
+Checks completed:
+- ${r.checked.join("\n- ")}
+
+Action:
+${r.action}`;
+
+  result.innerHTML = `
+    <h3>Route Call To</h3>
+    <p><b>Team:</b> ${r.team}</p>
+    <p><b>Contact:</b> ${r.contact}</p>
+    <div class="smallMuted">Pick a category → sub-category → issue to generate call notes.</div>`;
+
+  notesDiv.innerHTML = `
+    <h3>Auto-Generated Call Notes</h3>
+
+    <div class="disclaimer">
+      <b>Disclaimer:</b> These suggested call notes are provided only to give an idea of typical checks and information to capture.
+      Use your judgement and adapt them to the situation and local process.
+    </div>
+
+    <textarea id="callNotes" readonly>${noteText}</textarea>
+    <button onclick="copyNotes(event)">Copy Call Notes</button>`;
+};
+
+function copyNotes(e) {
+  const ta = document.getElementById("callNotes");
+  ta.select();
+  ta.setSelectionRange(0, ta.value.length);
+  document.execCommand("copy");
+
+  const btn = e.target;
+  btn.textContent = "Copied!";
+  setTimeout(() => btn.textContent = "Copy Call Notes", 1500);
+}
+
+function reset(sel) {
+  sel.innerHTML = '<option value="">Select</option>';
+  sel.disabled = true;
+}
+</script>
+</body>
+</html>
